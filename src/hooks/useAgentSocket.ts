@@ -13,15 +13,15 @@ function getLogColor(text: string): string {
   if (lower.includes('[playwright]')) return '#60a5fa';
   if (lower.includes('[agent')) return '#facc15';
   if (lower.includes('[guardrail]')) {
-    if (lower.includes('fail')) return '#f87171';
-    return '#4ade80';
+    if (lower.includes('fail')) return '#ff4444';
+    return '#00ff88';
   }
   if (lower.includes('[query]')) return '#67e8f9';
   if (lower.includes('[decomposer]')) return '#fb923c';
-  if (lower.includes('[stream]')) return '#e5e7eb';
+  if (lower.includes('[stream]')) return '#c9d1d9';
   if (lower.includes('[memory]')) return '#c084fc';
-  if (lower.includes('[ws]')) return '#6b7280';
-  return '#e5e7eb';
+  if (lower.includes('[ws]')) return '#444444';
+  return '#c9d1d9';
 }
 
 export function useAgentSocket() {

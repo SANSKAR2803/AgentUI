@@ -51,26 +51,18 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="sidebar-header">
         <div className="sidebar-logo">
-          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="4" y="8" width="24" height="16" rx="4" stroke="#60a5fa" strokeWidth="2" fill="none" />
-            <circle cx="12" cy="16" r="2.5" fill="#60a5fa" />
-            <circle cx="20" cy="16" r="2.5" fill="#60a5fa" />
-            <path d="M10 26 L16 22 L22 26" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" fill="none" />
-            <path d="M16 8 L16 4" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" />
-            <circle cx="16" cy="3" r="1.5" fill="#60a5fa" />
-            <path d="M4 14 L1 11" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" />
-            <path d="M28 14 L31 11" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-          <span className="sidebar-title">BrowserAgent</span>
+          <span className="sidebar-logo-chevron">&gt;</span>
+          <span className="sidebar-title">BrowserAgent<span className="sidebar-title-cursor">_</span></span>
         </div>
+        <span className="sidebar-version">// autonomous web agent v1.0</span>
       </div>
+
+      {/* Section Label */}
+      <div className="section-label">// SESSIONS</div>
 
       {/* New Chat Button */}
       <button onClick={handleNewChat} className="new-chat-btn">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        </svg>
-        New Chat
+        [ + NEW SESSION ]
       </button>
 
       {/* Session List */}

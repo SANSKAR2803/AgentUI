@@ -2,10 +2,16 @@ import { useState, useRef, useEffect, type KeyboardEvent } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useVoiceInput } from '../hooks/useVoiceInput';
 
-const AGENT_LABELS: Record<string, string> = {
-  'form-filling': 'Form Filling',
-  'job-researcher': 'Job Researcher',
-  'yt-extractor': 'YT Extractor',
+const AGENT_FLAGS: Record<string, string> = {
+  'form-filling': '--agent=form-filling',
+  'job-researcher': '--agent=job-researcher',
+  'yt-extractor': '--agent=yt-extractor',
+};
+
+const AGENT_COLORS: Record<string, string> = {
+  'form-filling': '#3b82f6',
+  'job-researcher': '#a855f7',
+  'yt-extractor': '#ef4444',
 };
 
 interface InputBarProps {
@@ -18,6 +24,8 @@ export default function InputBar({ onSend, externalValue, onExternalValueConsume
   const { state } = useAppContext();
   const [value, setValue] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [glitch, setGlitch] = useState(false);
+  const prevAgentRef = useRef(state.activeAgent);
   const {
     isListening,
     transcript,
@@ -25,6 +33,16 @@ export default function InputBar({ onSend, externalValue, onExternalValueConsume
     isSupported: voiceSupported,
     toggleListening,
   } = useVoiceInput();
+
+  // Agent glitch animation on switch
+  useEffect(() => {
+    if (prevAgentRef.current !== state.activeAgent) {
+      prevAgentRef.current = state.activeAgent;
+      setGlitch(true);
+      const timer = setTimeout(() => setGlitch(false), 200);
+      return () => clearTimeout(timer);
+    }
+  }, [state.activeAgent]);
 
   // Append transcript from voice input
   useEffect(() => {
@@ -69,10 +87,11 @@ export default function InputBar({ onSend, externalValue, onExternalValueConsume
     }
   };
 
-  // Display text: actual value + any interim voice text
   const displayPlaceholder = isListening
     ? interimTranscript || 'Listening…'
-    : 'Type your task here…';
+    : '$ type your task_';
+
+  const agentColor = AGENT_COLORS[state.activeAgent] || '#00ff88';
 
   return (
     <div className="input-bar">
@@ -86,14 +105,17 @@ export default function InputBar({ onSend, externalValue, onExternalValueConsume
             {interimTranscript || 'Listening…'}
           </span>
           <button className="voice-stop-btn" onClick={toggleListening}>
-            Stop
+            STOP
           </button>
         </div>
       )}
 
       <div className="input-bar-inner">
-        <span className="input-agent-badge">
-          {AGENT_LABELS[state.activeAgent]}
+        <span
+          className={`input-agent-badge ${glitch ? 'glitch' : ''}`}
+          style={{ color: agentColor }}
+        >
+          {AGENT_FLAGS[state.activeAgent]}
         </span>
 
         <textarea
@@ -134,9 +156,7 @@ export default function InputBar({ onSend, externalValue, onExternalValueConsume
             className="send-btn"
             aria-label="Send message"
           >
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-              <path d="M10 16V4M10 4L5 9M10 4L15 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            ▶
           </button>
         </div>
       </div>
